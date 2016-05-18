@@ -1,0 +1,60 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue May 17 14:42:30 2016
+
+@author: tete
+"""
+
+from flask import render_template,url_for,redirect,request
+from app import app
+from .forms import DevNameForm
+from .database import BeaconDevAdapter
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
+
+@app.route('/',methods=['GET','POST'])
+@app.route('/index',methods=['GET','POST'])
+def index():
+    return render_template('index.html',title='FuBeacon')
+    
+    
+@app.route('/life',methods=['GET','POST'])
+def mylife():
+    return render_template('index.html',title='FuBeacon',change='life')
+    
+@app.route('/setting',methods=['GET','POST'])
+def dev_setting():
+    form = DevNameForm()
+    adapter = BeaconDevAdapter()
+    
+    corname = ''
+    msg = ''
+    dev_id = ''    
+    test = 'xxx'
+    print 'Into setting...'
+    if request.method == 'POST':
+        
+        print '一次请求。。。'
+        corname = form.cor_name.data
+        msg = form.message.data
+        dev_id = form.dev_id.data
+        #print int(form.proxi_state.data),type(int(form.proxi_state.data))
+        
+        if len(dev_id) != 0:
+            adapter.set_time(dev_id.decode(),int(form.proxi_state.data))		
+        print '依次是： ',corname,msg,dev_id
+        #adapter.update_corname_with_id(dev_id,u'及八宝')
+        if len(corname) != 0 and len(dev_id) != 0:
+            adapter.update_corname_with_id(dev_id.decode().encode('utf-8'),corname.decode())
+        
+        if len(msg) != 0 and len(dev_id) != 0:
+            adapter.update_msg_with_id(dev_id.decode().encode('utf-8'),msg.decode())
+        test = '有'
+        
+    return render_template('setting.html',form=form,test = test)
+    
+@app.route('/about')
+def about():
+    return render_template('about.html')
