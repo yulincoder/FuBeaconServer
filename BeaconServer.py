@@ -12,7 +12,7 @@ import time
 from database import BeaconDevAdapter
 
 ADDR = '0.0.0.0'
-PORT = 8037
+PORT = 8080
 BUFFSIZE = 1024
 
 
