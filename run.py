@@ -6,4 +6,4 @@ Created on Mon May 16 23:25:58 2016
 """
 
 from app import app
-app.run(host='0.0.0.0',debug=True,port=8081)
+app.run(host='0.0.0.0',debug=True,port=80)
