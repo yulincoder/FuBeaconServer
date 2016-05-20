@@ -1,7 +1,7 @@
 ![hh](http://7xj3h9.com1.z0.glb.clouddn.com/16-2-16/59319935.jpg) 
 # FuBeaconServer
 
-### FuBeacon系统的[服务器](121.42.199.230)代码托管
+### FuBeacon系统的[服务器](http://121.42.199.230)代码托管
 
 这是一个毕业设计作品的一部分...
 
