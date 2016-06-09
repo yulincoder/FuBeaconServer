@@ -19,7 +19,6 @@ BUFFSIZE = 1024
 dev_pre_time = {'uuid_1major_1minor_1':0,'uuid_1major_1minor_2':0}
 
 def tcp_task(sock,addr):
-    
     json_data = sock.recv(BUFFSIZE)
     try:
         req_data = json.loads(json_data)
@@ -34,13 +33,19 @@ def tcp_task(sock,addr):
         pre_time = dev_pre_time[dev_id]
         #pre_time = adapter.get_prev_time(dev_id) # It can come up a database locked error.
         #adapter.set_time(dev_id,time_now) 
-        sett_rssi = adapter.get_prev_time(dev_id)
+        sett_rssi = adapter.get_rssi(dev_id)
         print '设置距离 --' + str(sett_rssi) +'--'+ str(type(sett_rssi))+'--'
         
         if rssi > sett_rssi:
             dev_pre_time[dev_id] = time_now # Update the time.
             if time_now-pre_time > 3:
                 resp_data = json.dumps({'corname':corname,'fuda':msg})
+                
+                hourvisit = adapter.get_hourvisit_with_id(dev_id) + 1
+                adapter.update_hourvisit_with_id(dev_id,hourvisit)
+                visit = adapter.get_visit_with_id(dev_id) + 1
+                adapter.update_visit_with_id(dev_id,visit)
+                
             else:
                 resp_data = json.dumps({'corname':'null','fuda':'null'})
         else:

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+
+ <div class="container">
+      <h2>设备列表</h2>
+      <p>FuBeacon很腻害</p>      
+      <div class="table-responsive">          
+       <table class="table table-striped table-bordered">
+         <thead>
+           <tr>
+             <th>序号</th>
+             <th>设备ID</th>
+             <th>机构</th>
+             <th>消息</th>
+             <th>类别</th>
+             <th>距离</th>
+             <th>1小时内访问次数</th>	
+             <th>访问次数</th>
+           </tr>
+         </thead>
+         <tbody>
+           <tr>
+             <td>1</td>
+             <td>{{devinfo[0]['id']}}</td>
+             <td>{{devinfo[0]['corname']}}</td>
+             <td>{{devinfo[0]['message']}}</td>
+             <td>{{devinfo[0]['category']}}</td>
+             <td>{{devinfo[0]['distance']}}</td>	
+             <td>{{devinfo[0]['hourvisit']}}</td>
+             <td>{{devinfo[0]['visit']}}</td>
+           </tr>
+
+           <tr>
+             <td>2</td>
+             <td>{{devinfo[1]['id']}}</td>
+             <td>{{devinfo[1]['corname']}}</td>
+             <td>{{devinfo[1]['message']}}</td>
+             <td>{{devinfo[1]['category']}}</td>
+             <td>{{devinfo[1]['distance']}}</td>	
+             <td>{{devinfo[1]['hourvisit']}}</td>
+             <td>{{devinfo[1]['visit']}}</td>
+           </tr>
+
+         </tbody>
+       </table>
+      </div>
+
+<p>
+<a class="btn btn-primary btn-large" href="/setting">设备设置 »</a>				
+</p>
+
+{% endblock %}
