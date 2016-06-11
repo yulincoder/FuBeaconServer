@@ -9,7 +9,9 @@ from flask import render_template,url_for,redirect,request
 from app import app
 from .forms import DevNameForm
 from .database import BeaconDevAdapter
+import json
 import sys
+import socket
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -82,7 +84,21 @@ def devicelist():
 
     return render_template('list.html',devinfo=devinfo)
 
-    
+
+def syndata_host(data):
+    # Synchronization data to another sever.
+    REMOTEHOST = ('127.0.0.1',10003)
+    s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+    try:
+        s.connect(REMOTEHOST)
+        syndata = json.dumps(data)
+        s.send(syndata)
+    except:
+        print 'syn remote host error!'
+    finally:
+        s.close()
+
+
 @app.route('/setting',methods=['GET','POST'])
 def dev_setting():
     form = DevNameForm()
@@ -96,15 +112,16 @@ def dev_setting():
 
     if request.method == 'POST':
         
-        print '一次请求。。。'
         corname = form.cor_name.data
         msg = form.message.data
         dev_id = form.dev_id.data
         #print int(form.proxi_state.data),type(int(form.proxi_state.data))
         
         if len(dev_id) != 0:
-            adapter.set_rssi(dev_id.decode(),int(form.proxi_state.data))		
-        print '依次是： ',corname,msg,dev_id
+            adapter.set_rssi(dev_id.decode(),int(form.proxi_state.data))
+            adapter.update_category_with_id(dev_id.decode(),form.category.data)
+
+
         #adapter.update_corname_with_id(dev_id,u'及八宝')
         if len(corname) != 0 and len(dev_id) != 0:
             adapter.update_corname_with_id(dev_id.decode().encode('utf-8'),corname.decode())
@@ -112,6 +129,17 @@ def dev_setting():
         if len(msg) != 0 and len(dev_id) != 0:
             adapter.update_msg_with_id(dev_id.decode().encode('utf-8'),msg.decode())
         test = '有'
+
+        if len(dev_id) != 0:
+            if len(corname) == 0:
+                corname = 'null'
+            if len(str(msg)) == 0:
+                msg = 'null'
+            #fromat of syndata is {'id':'xx','corname':'xx','msg':'xx','category':'xx','rssi':xx,'hourvisit':xx,'visit':xx}
+        syndata = {"id":dev_id,"corname":corname,"msg":msg,"category":str(form.category.data),"rssi":int(form.proxi_state.data),'hourvisit':'null','visit':'null'}
+        syndata_host(syndata)
+
+
 
         # return to list page.
         devinfo = []

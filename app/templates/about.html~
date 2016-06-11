@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<div id="LG" class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="hero-unit">
+				<h1>
+					FuBeacon!
+				</h1>
+				
+				<p>
+					这是一个毕业设计作品的一部分...
+				</p>
+				<br/>
+				<p>
+					这是一个Beacon消息推送系统的一部分...
+				</p>
+				<br/>
+				<p>
+					这个毕业设计作品被命名为FuBeacon
+				</p>
+				<br/>
+				<p>
+					FuBeacon由服务器，客户端，基站三部分组成，它能够实现基于位置信息的消息推送功能。
+				</p>
+				<hr/>
+				<p>
+					&nbsp;&nbsp;&nbsp;&nbsp;服务器端运行与Linux平台之上，它分为Web端和消息推送端两部分，它们共享一个SQLite数据库；其中Web端提供修改推送消息内容的服务，而消息推送端提供面向客户端的消息推送服务；整个服务器程序是由基于Python语言的<a href="http://flask.pocoo.org/">Flask</a>框架开发，Web前端采用了Twitter公司的开源框架<a href="http://www.bootcss.com/">Bootstrap</a>框架，在前端的CSS和Javascript文件使用了Francesco Malagrino的<a href="https://en.wikipedia.org/wiki/Content_delivery_network">CDN</a>加速，但是由于众所周知的原因，它实际上被“减速”了，因此下一步我将会更换为国内的Bootstrap静态文件加速，而前端的图片静态文件采用了七牛公司的CDN节点加速。
+				</p>
+				
+				<p>
+					&nbsp;&nbsp;&nbsp;&nbsp;客户端则因为另一个众所知周的原因（“穷”）只有安卓部分，客户端主要有这样几个功能：通过蓝牙从Beacon基站接收广播消息，通过TCP从服务器用Pull的方式获取与Beacon位置关联的推送消息，在获取消息的过程中它会额外发送希望获取消息类型编号。
+				</p>
+				
+				<p>
+					&nbsp;&nbsp;&nbsp;&nbsp;基站部分则采用CC2540芯片开发，通过蓝牙4.0广播一个特殊且独一无二的消息序列，这个消息序列由UUID，Major，Minor三部分组成。广播是不间断的，每两次广播的间隔时间应该可以通过Web端设定（然而我的初版Demo将不会包含这个功能）。
+				</p>
+				<p>
+					&nbsp;&nbsp;&nbsp;&nbsp;需要注意的是，初版的FuBeacon开发基站将首先采用HC-05这个原始的蓝牙2.0模块开发，这样做的原因是希望将前期工作的重心转移到服务器端。
+				</p>
+				
+				<p>
+					<a class="btn btn-primary btn-large" href="http://7xj3h9.com1.z0.glb.clouddn.com/1.jpg">参看更多 »</a>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

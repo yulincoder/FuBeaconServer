@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+		<p>{{ notice }}</p>
+			<form method="POST">
+				<fieldset>
+				 <legend><strong><span>设置你的FuBeacon设备的推送消息</span></strong></legend><br />
+				{{ form.hidden_tag() }}	
+				{{ form.dev_id.label }} {{form.dev_id(id='dev_id-field')}} 
+				{{ form.cor_name.label }} {{form.cor_name(id='cor_name-field')}} 
+				{{ form.message.label }} {{form.message(id='message-field')}} <br/> 
+				{{ form.proxi_state }}
+				<!--{{ form.category.label }} {{ form.category(id='category-field') }} -->
+				<br/> 
+				{{ form.submit(id='btn') }}
+				</fieldset>
+			</form>	
+{% endblock %}
