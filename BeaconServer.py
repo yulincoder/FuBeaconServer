@@ -15,10 +15,18 @@ ADDR = '0.0.0.0'
 PORT = 8080
 BUFFSIZE = 1024
 
+#REMOTEHOST = ('123.206.81.181',10002)
+#REMOTEHOST = ('121.42.199.230',10001)
+REMOTEHOST = ('127.0.0.1',10002)
+BUFFSIZE = 1024
+
 
 dev_pre_time = {'uuid_1major_1minor_1':0,'uuid_1major_1minor_2':0}
 
 def tcp_task(sock,addr):
+    global REMOTEHOST,BUFFSIZE
+    s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+
     json_data = sock.recv(BUFFSIZE)
     try:
         req_data = json.loads(json_data)
@@ -41,11 +49,15 @@ def tcp_task(sock,addr):
             if time_now-pre_time > 3:
                 resp_data = json.dumps({'corname':corname,'fuda':msg})
                 
-                hourvisit = adapter.get_hourvisit_with_id(dev_id) + 1
-                adapter.update_hourvisit_with_id(dev_id,hourvisit)
-                visit = adapter.get_visit_with_id(dev_id) + 1
-                adapter.update_visit_with_id(dev_id,visit)
-                
+                try:    
+                    s.connect(REMOTEHOST)
+                    hourvisit = adapter.get_hourvisit_with_id(dev_id) + 1
+                    adapter.update_hourvisit_with_id(dev_id,hourvisit)
+                    visit = adapter.get_visit_with_id(dev_id) + 1
+                    adapter.update_visit_with_id(dev_id,visit)
+                    s.send(json.dumps({"id":dev_id,"visit":visit,"hourvisit":hourvisit}))
+                except:
+                    print 'Remote host error!'
             else:
                 resp_data = json.dumps({'corname':'null','fuda':'null'})
         else:

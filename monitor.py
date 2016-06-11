@@ -6,7 +6,9 @@ import socket
 import json
 import time
 
-REMOTEHOST = ('127.0.0.1',8080)
+QdREMOTEHOST = ('127.0.0.1',8080)
+#BjREMOTEHOST = ('127.0.0.1',8081)
+
 BUFFSIZE = 1024
 timeout = 4
 #s.settimeout(timeout)
@@ -24,13 +26,15 @@ def loopmonitor():
 
 		time.sleep(5)
 		try:	
-			s.connect(REMOTEHOST)
+			#s.connect(BjREMOTEHOST)
+			s.connect(QdREMOTEHOST)
 		except Exception, e:
 			if hoststate or hoststate is None :
 				hoststate = False
 				localtime = time.asctime( time.localtime(time.time()) )
 				sender = SMTPAlert()
-				msg = ('通知：1号服务器APP客户端连接异常' +"\n --  " + localtime)
+				#msg = ('通知：北京服务器APP客户端连接异常' +"\n --  " + localtime)
+				msg = ('通知：青岛服务器APP客户端连接异常' +"\n --  " + localtime)
 				sender.send(msg)
 				s.close()
 				print '|    状态 : 异常    |    时间: %s    |' % localtime
@@ -39,7 +43,8 @@ def loopmonitor():
 				hoststate = True
 				localtime = time.asctime( time.localtime(time.time()) )
 				sender = SMTPAlert()
-				msg = ('通知：1号服务器APP客户端连接恢复' +"\n --  " + localtime)
+				#msg = ('通知：北京服务器APP客户端连接恢复' +"\n --  " + localtime)
+				msg = ('通知：青岛服务器APP客户端连接恢复' +"\n --  " + localtime)
 				sender.send(msg)
 				s.send('monitor')
 				s.close()

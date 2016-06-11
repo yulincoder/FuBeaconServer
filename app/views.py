@@ -87,7 +87,9 @@ def devicelist():
 
 def syndata_host(data):
     # Synchronization data to another sever.
-    REMOTEHOST = ('127.0.0.1',10003)
+    #REMOTEHOST = ('123.206.81.186',10002)
+    #REMOTEHOST = ('121.42.199.230',10001)
+    REMOTEHOST = ('127.0.0.1',10002)
     s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
     try:
         s.connect(REMOTEHOST)

@@ -7,6 +7,7 @@ import time
 from database import BeaconDevAdapter
 
 ADDR = '0.0.0.0'
+#PORT = 10002  # 2#host
 PORT = 10001
 BUFFSIZE = 1024
 
@@ -15,8 +16,8 @@ def tcp_task(sock,addr):
     adapter = BeaconDevAdapter()
     try:
         syndata = json.loads(json_data)
-        #fromat of syndata is {'id':'xx','corname':'xx','msg':'xx','category':'xx','rssi':xx,'hourvisit':xx,'visit':xx}
-        if 'id' in syndata:
+        #fromat of syndata is {'id':'xx','corname':'xx','msg':'xx','category':'xx','rssi':xx} or {'id':'xx','hourvisit':xx,'visit':xx} 
+        if 'corname' in syndata:
             adapter.set_rssi(syndata['id'],syndata['rssi'])
             if  syndata['corname'] != 'null':
                 adapter.update_corname_with_id(syndata['id'],syndata['corname'])
@@ -25,8 +26,9 @@ def tcp_task(sock,addr):
                 adapter.update_msg_with_id(syndata['id'],syndata['msg'])
                 print 'msg:',syndata['msg']
             adapter.update_category_with_id(syndata['id'],syndata['category']);print 'syn success.'
-            #adapter.update_hourvisit_with_id(syndata['id'],syndata['hourvisit'])
-            #adapter.update_visit_with_id(syndata['id'],syndata['visit'])
+        elif 'visit' in syndata:
+            adapter.update_hourvisit_with_id(syndata['id'],syndata['hourvisit'])
+            adapter.update_visit_with_id(syndata['id'],syndata['visit'])
         else:
             print 'syndata format error!.'
                 
